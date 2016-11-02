@@ -15,11 +15,11 @@ public class Repository : EFRepository, IDisposable
 
 ```
 
-And then in another class for example ProdutBL.cs:
+And then in another class for example ProductBL.cs:
 
 ```javascript
 
-IRepository repo = new Business.Repository();
+IRepository repo = new BusinessLogicLayer.Repository();
 
 public IEnumerable<Product> GetAll()
 {
@@ -32,8 +32,6 @@ If you need relations
 
 ```javascript
 
-IRepository repo = new Business.Repository();
-
 public IEnumerable<Product> GetAll()
 {
     return repo.GetAll<Product>(c=>true, "Category");
@@ -44,8 +42,6 @@ public IEnumerable<Product> GetAll()
 or
 
 ```javascript
-
-IRepository repo = new Business.Repository();
 
 public IEnumerable<Product> GetAll()
 {
