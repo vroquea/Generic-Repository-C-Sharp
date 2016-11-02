@@ -1,4 +1,4 @@
-# Generic Repository C#
+# Generic Repository C sharp
 
 Example to use:
 
