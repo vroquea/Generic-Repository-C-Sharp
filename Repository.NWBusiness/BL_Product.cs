@@ -20,6 +20,15 @@ namespace Repository.NWBusiness
             return await repo.GetAllAsync<Product>(p => true);
         }
 
+        public Product Create(Product model)
+        {
+            return repo.Create(model);
+        }
+        public async Task<Product> CreateAsync(Product model)
+        {
+            return await repo.CreateAsync(model);
+        }
+
         public async Task<IEnumerable<Product>> GetAllWithRelationAsync()
         {
             return await repo.GetAllAsync<Product>(p => true, "Category");

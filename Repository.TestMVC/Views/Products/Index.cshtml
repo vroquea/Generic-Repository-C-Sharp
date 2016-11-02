@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Repository.NWEntities.Product>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Products</h2>
+
+<a class="btn btn-primary" href="@Url.Action("Create")">New</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th class="text-right">Id</th>
+            <th class="text-right">Unit Price</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Category.CategoryName</td>
+                <td class="text-right">@product.ProductID</td>
+                <td class="text-right">@(product.UnitPrice.Value.ToString("C"))</td>
+                <td>@product.ProductName</td>
+                <td>
+                    <a href="@Url.Action("Edit",new { id = product.ProductID } )" class="btn btn-default" disabled>Edit</a>
+                    <a href="@Url.Action("Details",new { id = product.ProductID })" class="btn btn-default" disabled>Details</a>
+                    <a href="@Url.Action("Delete",new { id = product.ProductID })" class="btn btn-danger" disabled>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
