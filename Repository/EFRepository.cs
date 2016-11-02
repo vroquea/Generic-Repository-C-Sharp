@@ -86,6 +86,49 @@ namespace Repository
             return Result;
         }
 
+        public bool DeletePartial<TEntity>(TEntity deletedEntity, Expression<Func<TEntity,object>> property) where TEntity : class
+        {
+            bool Result = false;
+
+            try
+            {
+                Context.Set<TEntity>().Attach(deletedEntity);
+
+                Context.Entry<TEntity>(deletedEntity).Property(property).IsModified = true;
+
+                Context.Entry<TEntity>(deletedEntity).State = EntityState.Modified;
+
+                Result = TrySaveChanges() > 0;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return Result;
+        }
+        public async Task<bool> DeletePartialAsync<TEntity>(TEntity deletedEntity, Expression<Func<TEntity, object>> property) where TEntity : class
+        {
+            bool Result = false;
+
+            try
+            {
+                Context.Set<TEntity>().Attach(deletedEntity);
+
+                Context.Entry<TEntity>(deletedEntity).Property(property).IsModified = true;
+
+                Context.Entry<TEntity>(deletedEntity).State = EntityState.Modified;
+
+                Result = await TrySaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return Result;
+        }
+
         public bool Update<TEntity>(TEntity modifiedEntity) where TEntity : class
         {
             bool Result = false;
@@ -189,7 +232,7 @@ namespace Repository
 
             try
             {
-                Result = await Task.Run(() => Context.Set<TEntity>().FirstOrDefault(criterion));
+                Result = await Context.Set<TEntity>().FirstOrDefaultAsync(criterion);
             }
             catch (Exception ex)
             {
@@ -235,7 +278,7 @@ namespace Repository
                     query = query.Include(item);
                 }
 
-                Result = await Task.Run(() => Context.Set<TEntity>().FirstOrDefault(criterion));
+                Result = await Context.Set<TEntity>().FirstOrDefaultAsync(criterion);
             }
             catch (Exception ex)
             {
@@ -280,7 +323,7 @@ namespace Repository
                     query = query.Include(item);
                 }
 
-                Result = await Task.Run(() => query.FirstOrDefault(criterion));
+                Result = await query.FirstOrDefaultAsync(criterion);
             }
             catch (Exception ex)
             {
@@ -311,7 +354,7 @@ namespace Repository
 
             try
             {
-                Result = await Task.Run(()=> Context.Set<TEntity>().Where(criterion).ToList()) ;
+                Result = await Context.Set<TEntity>().Where(criterion).ToListAsync() ;
             }
             catch (Exception ex)
             {
@@ -359,7 +402,7 @@ namespace Repository
                     query = query.Include(item);
                 }
 
-                Result = await Task.Run(()=> query.ToList());
+                Result = await query.ToListAsync();
 
             }
             catch (Exception ex)
@@ -408,7 +451,7 @@ namespace Repository
                     query = query.Include(item);
                 }
 
-                Result = await Task.Run(()=> query.ToList());
+                Result = await query.ToListAsync();
 
             }
             catch (Exception ex)
@@ -419,13 +462,54 @@ namespace Repository
             return Result;
         }
 
+        public bool CheckExist<TEntity>(Expression<Func<TEntity,bool>> criterion) where TEntity : class
+        {
+            try
+            {
+                bool result = false;
+
+                var entity = Context.Set<TEntity>().FirstOrDefault(criterion);
+
+                if (entity != null)
+                {
+                    result = true;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<bool> CheckExistAsync<TEntity>(Expression<Func<TEntity, bool>> criterion) where TEntity : class
+        {
+            try
+            {
+                bool result = false;
+
+                var entity = await Context.Set<TEntity>().FirstOrDefaultAsync(criterion);
+
+                if (entity != null)
+                {
+                    result = true;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         protected virtual int TrySaveChanges()
         {
             return Context.SaveChanges();
         }
         protected virtual async Task<int> TrySaveChangesAsync()
         {
-            return await Task.Run(()=> Context.SaveChanges());
+            return await Context.SaveChangesAsync();
         }
 
         public void Dispose()
@@ -435,6 +519,8 @@ namespace Repository
                 Context.Dispose();
             }
         }
+
+        
     }
 }
 
