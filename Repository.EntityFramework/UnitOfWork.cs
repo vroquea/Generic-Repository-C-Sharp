@@ -9,7 +9,6 @@ namespace Repository.EntityFramework
         public UnitOfWork(DbContext context, bool autoDetectChangesEnabled = false,
                                           bool proxyCreationEnabled = false) : base(context,autoDetectChangesEnabled, proxyCreationEnabled)
         {
-            
         }
 
         protected override int TrySaveChanges()

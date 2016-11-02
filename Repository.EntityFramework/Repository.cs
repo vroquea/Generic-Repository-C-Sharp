@@ -244,51 +244,6 @@ namespace Repository.EntityFramework
 
             }
 
-            public TEntity FindEntity<TEntity>(Expression<Func<TEntity, bool>> criterion, List<Expression<Func<TEntity, TEntity>>> relations) where TEntity : class
-            {
-                TEntity Result = null;
-
-                try
-                {
-                    var query = Context.Set<TEntity>().AsQueryable();
-
-                    foreach (var item in relations)
-                    {
-                        query = query.Include(item);
-                    }
-
-                    Result = Context.Set<TEntity>().FirstOrDefault(criterion);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
-                return Result;
-            }
-            public async Task<TEntity> FindEntityAsync<TEntity>(Expression<Func<TEntity, bool>> criterion, List<Expression<Func<TEntity, TEntity>>> relations) where TEntity : class
-            {
-                TEntity Result = null;
-
-                try
-                {
-                    var query = Context.Set<TEntity>().AsQueryable();
-
-                    foreach (var item in relations)
-                    {
-                        query = query.Include(item);
-                    }
-
-                    Result = await Context.Set<TEntity>().FirstOrDefaultAsync(criterion);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
-                return Result;
-            }
-
             public TEntity FindEntity<TEntity>(Expression<Func<TEntity, bool>> criterion, params string[] relations) where TEntity : class
             {
                 TEntity Result = null;
@@ -356,55 +311,6 @@ namespace Repository.EntityFramework
                 try
                 {
                     Result = await Context.Set<TEntity>().Where(criterion).ToListAsync();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
-                return Result;
-            }
-
-            public IEnumerable<TEntity> GetAll<TEntity>(Expression<Func<TEntity, bool>> criterion, List<Expression<Func<TEntity, TEntity>>> relations) where TEntity : class
-            {
-                List<TEntity> Result = null;
-
-                try
-                {
-
-                    var query = Context.Set<TEntity>().AsQueryable().Where(criterion);
-
-                    foreach (var item in relations)
-                    {
-                        query = query.Include(item);
-                    }
-
-                    Result = query.ToList();
-
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
-                return Result;
-            }
-            public async Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> criterion, List<Expression<Func<TEntity, TEntity>>> relations) where TEntity : class
-            {
-                List<TEntity> Result = null;
-
-                try
-                {
-
-                    var query = Context.Set<TEntity>().AsQueryable().Where(criterion);
-
-                    foreach (var item in relations)
-                    {
-                        query = query.Include(item);
-                    }
-
-                    Result = await query.ToListAsync();
-
                 }
                 catch (Exception ex)
                 {
