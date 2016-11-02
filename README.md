@@ -6,24 +6,41 @@ You need to create a class inside your business logic layer, for example Reposit
 
 ```javascript
 
-public class Repository : EFRepository, IDisposable
+public class BL_Repository: Repository.EntityFramework.Repository, IDisposable
 {
-    public Repository(bool autoDetectChangesEnabled = false, bool proxyCreationEnabled = false) : base(new AlmacenContext(), autoDetectChangesEnabled, proxyCreationEnabled)
+    public BL_Repository(bool autoDetectChangesEnabled = false, bool proxyCreationEnabled = false)
+        :base(new NWContext(),autoDetectChangesEnabled,proxyCreationEnabled)
     {
+
     }
 }
 
 ```
 
-And then in another class for example ProductBL.cs:
+And then in another class for example BL_Product.cs:
 
 ```javascript
 
-IRepository repo = new BusinessLogicLayer.Repository();
-
-public IEnumerable<Product> GetAll()
+namespace Repository.NWBusiness
 {
-    return repo.GetAll<Product>(c=>true);
+    public class BL_Product
+    {
+        IRepository repo = new BL_Repository();
+
+        public IEnumerable<Product> GetAll()
+        {
+            return repo.GetAll<Product>(p => true);
+        }
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await repo.GetAllAsync<Product>(p => true);
+        }
+
+        public async Task<IEnumerable<Product>> GetAllWithRelationAsync()
+        {
+            return await repo.GetAllAsync<Product>(p => true, "Category");
+        }
+    }
 }
 
 ```
@@ -32,20 +49,25 @@ If you need relations
 
 ```javascript
 
-public IEnumerable<Product> GetAll()
+public async Task<IEnumerable<Product>> GetAllWithRelationAsync()
 {
-    return repo.GetAll<Product>(c=>true, "Category");
+    return await repo.GetAllAsync<Product>(p => true, "Category");
 }
 
 ```
 
-or
+Async methods
 
 ```javascript
 
-public IEnumerable<Product> GetAll()
+public async Task<IEnumerable<Product>> GetAllAsync()
 {
-    return repo.GetAll<Product>(c=>true, c=>c.Category);
+    return await repo.GetAllAsync<Product>(p => true);
+}
+
+public async Task<IEnumerable<Product>> GetAllWithRelationAsync()
+{
+    return await repo.GetAllAsync<Product>(p => true, "Category");
 }
 
 ```
