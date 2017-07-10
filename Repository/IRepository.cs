@@ -121,6 +121,23 @@ namespace Repository
         Task<TEntity> FindEntityAsync<TEntity>(Expression<Func<TEntity, bool>> criterion, params string[] relations) where TEntity : class;
 
         /// <summary>
+        /// Find an entity by some criterion and bring relational data
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="criterion"></param>
+        /// <param name="relations">Relations</param>
+        /// <returns></returns>
+        TEntity FindEntity<TEntity,TRelation>(Expression<Func<TEntity, bool>> criterion, Expression<Func<TEntity, TRelation>> relation) where TEntity : class;
+        /// <summary>
+        /// Find an entity by some criteria and bring relational data and return Task
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="criterion"></param>
+        /// <param name="relations"></param>
+        /// <returns></returns>
+        Task<TEntity> FindEntityAsync<TEntity, TRelation>(Expression<Func<TEntity, bool>> criterion, Expression<Func<TEntity, TRelation>> relation) where TEntity : class;
+
+        /// <summary>
         /// Get all data from a table by some criterion
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
@@ -153,14 +170,14 @@ namespace Repository
         Task<IEnumerable<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> criterion, params string[] relations) where TEntity : class;
 
         /// <summary>
-        /// Check if an entity existing in a database
+        /// Check if an entity existing in database
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="criterion"></param>
         /// <returns></returns>
         bool CheckExist<TEntity>(Expression<Func<TEntity, bool>> criterion) where TEntity : class;
         /// <summary>
-        /// Check if an entity existing in a database and return a Task
+        /// Check if an entity existing in database and return a Task
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="criterion"></param>
