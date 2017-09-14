@@ -1,11 +1,7 @@
 ﻿using ConsoleAppTest.Context;
 using ConsoleAppTest.Entities;
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleAppTest.Logic
 {
@@ -15,20 +11,23 @@ namespace ConsoleAppTest.Logic
 
         public static Product Create(Product model)
         {
-            return repo.Create<Product>(model);
+            return repo.Create(model);
         }
-
         public static Product Find(int id)
         {
             return repo.FindEntity<Product>(p => p.Id == id);
         }
-        public static Product FindWthRelation(int id)
+        public static Product FindWithBrand(int id)
         {
             return repo.FindEntity<Product,Brand>(p => p.Id == id, p => p.Brand);
         }
-        public static Product FindWthRelation(int id,params string[] relations)
+        public static Product FindWithCategories(int id)
         {
-            return repo.FindEntity<Product>(p => p.Id == id, relations);
+            return repo.FindEntity<Product, IEnumerable<Category>>(p => p.Id == id, p => p.Categories);
+        }
+        public static Product FindWithAllRelations(int id)
+        {
+            return repo.FindEntity<Product>(p => p.Id == id, nameof(Product.Categories), nameof(Product.Brand));
         }
     }
 }

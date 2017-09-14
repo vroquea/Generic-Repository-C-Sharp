@@ -3,9 +3,6 @@ using ConsoleAppTest.Entities;
 using ConsoleAppTest.Logic;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleAppTest
 {
@@ -14,9 +11,12 @@ namespace ConsoleAppTest
         static readonly RepoContext repo = new RepoContext();
         static void Main(string[] args)
         {
-            seedCategory();
-            seedBrand();
+            #region Seed
+            //seedCategory();
+            //seedBrand();
+            #endregion
 
+            #region CreateProduct
             //var category1 = BL_Category.Find(1);
             //var category2 = BL_Category.Find(2);
 
@@ -27,8 +27,13 @@ namespace ConsoleAppTest
             //var product = new Product { Name = "Prueba de producto", Brand = brand, Categories = categories };
             //var result = BL_Product.Create(product);
             //Console.WriteLine($"Producto creado: {result.Name}");
+            #endregion
 
-            //var product = BL_Product.FindWthRelation(3,"brand","Categories");
+            #region  GetData
+            var categories = BL_Category.GetAll();
+            var product = BL_Product.FindWithAllRelations(1);
+            var brand = BL_Brand.GetAll();
+            #endregion
 
             Console.ReadLine();
         }

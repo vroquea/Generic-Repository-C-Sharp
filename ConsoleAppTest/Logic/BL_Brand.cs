@@ -20,5 +20,9 @@ namespace ConsoleAppTest.Logic
         {
             return repo.FindEntity<Brand>(b => b.Id == id);
         }
+        public static IEnumerable<Brand> GetAll()
+        {
+            return repo.GetAll<Brand>(b => true);
+        }
     }
 }
