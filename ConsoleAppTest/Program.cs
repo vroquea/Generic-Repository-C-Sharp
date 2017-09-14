@@ -14,6 +14,9 @@ namespace ConsoleAppTest
         static readonly RepoContext repo = new RepoContext();
         static void Main(string[] args)
         {
+            seedCategory();
+            seedBrand();
+
             //var category1 = BL_Category.Find(1);
             //var category2 = BL_Category.Find(2);
 
@@ -25,7 +28,7 @@ namespace ConsoleAppTest
             //var result = BL_Product.Create(product);
             //Console.WriteLine($"Producto creado: {result.Name}");
 
-            var product = BL_Product.FindWthRelation(3,"brand","Categories");
+            //var product = BL_Product.FindWthRelation(3,"brand","Categories");
 
             Console.ReadLine();
         }
