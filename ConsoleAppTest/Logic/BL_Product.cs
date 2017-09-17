@@ -8,52 +8,22 @@ namespace ConsoleAppTest.Logic
     public class BL_Product
     {
         static IRepository repo = new RepoContext();
-        static IUnitOfWork repoUoW = new RepoUoWContext();
-        public static Product Create(Product model)
+        public static Product Create(Product model, IEnumerable<int> categories, int BrandId)
         {
+            List<Category> myCategories = new List<Category>();
+            foreach (var category in categories)
+            {
+                myCategories.Add(BL_Category.Find(category, repo));
+            }
+            Brand brand = BL_Brand.Find(BrandId,repo);
+
+            model.Categories = myCategories;
+            model.Brand = brand;
             return repo.Create(model);
         }
-        public static Brand FindUoW(int id)
+        public static Brand FindBrand(int id)
         {
-            return repoUoW.FindEntity<Brand>(b => b.Id == id);
-        }
-        public static Category FindCategoryUoW(int id)
-        {
-            return repoUoW.FindEntity<Category>(b => b.Id == id);
-        }
-        public static Product CreateUoW(Product model)
-        {
-            var brand = FindUoW(model.BrandId);
-            model.Brand = brand;
-            var product = repoUoW.Create(model);
-            repoUoW.Save();
-            return product;
-        }
-        public static Product CreateWithCategoriesUoW(Product model)
-        {
-            var categories = new List<Category>();
-            foreach (var category in model.Categories)
-            {
-                categories.Add(FindCategoryUoW(category.Id));
-            }
-            model.Categories = categories;
-            var product = repoUoW.Create(model);
-            repoUoW.Save();
-            return product;
-        }
-        public static Product CreateWithCategoriesAndBrandUoW(Product model)
-        {
-            var categories = new List<Category>();
-            foreach (var category in model.Categories)
-            {
-                categories.Add(FindCategoryUoW(category.Id));
-            }
-            var brand = FindUoW(model.BrandId);
-            model.Brand = brand;
-            model.Categories = categories;
-            var product = repoUoW.Create(model);
-            repoUoW.Save();
-            return product;
+            return repo.FindEntity<Brand>(b => b.Id == id);
         }
         public static Product Find(int id)
         {

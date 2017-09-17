@@ -22,10 +22,10 @@ namespace ConsoleAppTest
             //var category2 = BL_Category.Find(2);
             //var categories = new List<Category> { category1, category2 };
             //var product = new Product { Name = "Prueba de producto", Brand = brand, Categories = categories };
-            var categories = BL_Category.GetAll();
-
-            var product = new Product { Name = "Producto many to many", BrandId = 1, Categories = new List<Category> { new Category { Id = 1 }  } };
-            var result = BL_Product.CreateWithCategoriesAndBrandUoW(product);
+            var categories1 = BL_Category.GetAll();
+            //var product = new Product { Name = "Producto many to many", BrandId = 1, Categories = new List<Category> { new Category { Id = 1 } } };
+            var product = new Product { Name = "Producto many to many"};
+            var result = BL_Product.Create(product, new List<int> { 1,2 },1);
             Console.WriteLine($"Producto creado: {result.Name}");
             #endregion
 

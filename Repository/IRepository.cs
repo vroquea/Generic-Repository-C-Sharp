@@ -104,6 +104,19 @@ namespace Repository
         Task<TEntity> CreateAsync<TEntity>(TEntity newEntity) where TEntity : class;
 
         /// <summary>
+        /// Create a new entity
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="newEntity"></param>
+        TEntity Create<TEntity, TRelation>(TEntity newEntity, Expression<Func<TEntity, IEnumerable<TRelation>>> criterion) where TEntity : class;
+        /// <summary>
+        /// Create a new entity async
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="newEntity"></param>
+        Task<TEntity> CreateAsync<TEntity, TRelation>(TEntity newEntity, Expression<Func<TEntity, IEnumerable<TRelation>>> criterion) where TEntity : class;
+
+        /// <summary>
         /// Modify an existing entity
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>

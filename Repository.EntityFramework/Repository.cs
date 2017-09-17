@@ -235,17 +235,31 @@ namespace Repository.EntityFramework
             return Result;
         }
 
-        public TEntity Create<TEntity>(TEntity newEntity, params Expression<Func<TEntity, object>>[] includes) where TEntity : class
+        public TEntity Create<TEntity, TRelation>(TEntity newEntity, Expression<Func<TEntity, IEnumerable<TRelation>>> criterion) where TEntity : class
         {
             TEntity Result = null;
             try
             {
-                var query = Context.Set<TEntity>().AsQueryable();
 
-                includes.Aggregate(query, (current, include) => current.Include(include));
+                var a = Context.Entry(newEntity).Property(criterion).EntityEntry;
 
                 Result = Context.Set<TEntity>().Add(newEntity);
+                
                 TrySaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Result;
+        }
+        public async Task<TEntity> CreateAsync<TEntity, TRelation>(TEntity newEntity, Expression<Func<TEntity, IEnumerable<TRelation>>> criterion) where TEntity : class
+        {
+            TEntity Result = null;
+            try
+            {
+                Result = Context.Set<TEntity>().Add(newEntity);
+                await TrySaveChangesAsync();
             }
             catch (Exception ex)
             {
