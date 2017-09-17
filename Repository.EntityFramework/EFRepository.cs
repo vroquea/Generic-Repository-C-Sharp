@@ -235,39 +235,6 @@ namespace Repository.EntityFramework
             return Result;
         }
 
-        public TEntity Create<TEntity, TRelation>(TEntity newEntity, Expression<Func<TEntity, IEnumerable<TRelation>>> criterion) where TEntity : class
-        {
-            TEntity Result = null;
-            try
-            {
-
-                var a = Context.Entry(newEntity).Property(criterion).EntityEntry;
-
-                Result = Context.Set<TEntity>().Add(newEntity);
-                
-                TrySaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return Result;
-        }
-        public async Task<TEntity> CreateAsync<TEntity, TRelation>(TEntity newEntity, Expression<Func<TEntity, IEnumerable<TRelation>>> criterion) where TEntity : class
-        {
-            TEntity Result = null;
-            try
-            {
-                Result = Context.Set<TEntity>().Add(newEntity);
-                await TrySaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return Result;
-        }
-
         public bool Update<TEntity>(TEntity modifiedEntity) where TEntity : class
         {
             bool Result = false;
@@ -307,9 +274,9 @@ namespace Repository.EntityFramework
                 Context.Set<TEntity>().Attach(modifiedEntity);
                 foreach (var item in properties)
                 {
-                    Context.Entry<TEntity>(modifiedEntity).Property(item).IsModified = isModified;
+                    Context.Entry(modifiedEntity).Property(item).IsModified = isModified;
                 }
-                Context.Entry<TEntity>(modifiedEntity).State = EntityState.Modified;
+                Context.Entry(modifiedEntity).State = EntityState.Modified;
                 Result = TrySaveChanges() > 0;
             }
             catch (Exception ex)
@@ -326,9 +293,9 @@ namespace Repository.EntityFramework
                 Context.Set<TEntity>().Attach(modifiedEntity);
                 foreach (var item in properties)
                 {
-                    Context.Entry<TEntity>(modifiedEntity).Property(item).IsModified = isModified;
+                    Context.Entry(modifiedEntity).Property(item).IsModified = isModified;
                 }
-                Context.Entry<TEntity>(modifiedEntity).State = EntityState.Modified;
+                Context.Entry(modifiedEntity).State = EntityState.Modified;
                 Result = await TrySaveChangesAsync() > 0;
             }
             catch (Exception ex)
