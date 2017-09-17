@@ -1,14 +1,15 @@
 ﻿using ConsoleAppTest.Context;
 using ConsoleAppTest.Entities;
 using ConsoleAppTest.Logic;
+using Repository;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace ConsoleAppTest
 {
     class Program
     {
-        static readonly RepoContext repo = new RepoContext();
         static void Main(string[] args)
         {
             #region Seed
@@ -19,20 +20,19 @@ namespace ConsoleAppTest
             #region CreateProduct
             //var category1 = BL_Category.Find(1);
             //var category2 = BL_Category.Find(2);
-
-            //var brand = BL_Brand.Find(1);
-
             //var categories = new List<Category> { category1, category2 };
-
             //var product = new Product { Name = "Prueba de producto", Brand = brand, Categories = categories };
-            //var result = BL_Product.Create(product);
-            //Console.WriteLine($"Producto creado: {result.Name}");
+            var categories = BL_Category.GetAll();
+
+            var product = new Product { Name = "Producto many to many", BrandId = 1, Categories = new List<Category> { new Category { Id = 1 }  } };
+            var result = BL_Product.CreateWithCategoriesAndBrandUoW(product);
+            Console.WriteLine($"Producto creado: {result.Name}");
             #endregion
 
             #region  GetData
-            var categories = BL_Category.GetAll();
-            var product = BL_Product.FindWithAllRelations(1);
-            var brand = BL_Brand.GetAll();
+            //var categories = BL_Category.GetAll();
+            //var product = BL_Product.FindWithAllRelations(1);
+            var categories2 = BL_Category.GetAll();
             #endregion
 
             Console.ReadLine();

@@ -235,6 +235,25 @@ namespace Repository.EntityFramework
             return Result;
         }
 
+        public TEntity Create<TEntity>(TEntity newEntity, params Expression<Func<TEntity, object>>[] includes) where TEntity : class
+        {
+            TEntity Result = null;
+            try
+            {
+                var query = Context.Set<TEntity>().AsQueryable();
+
+                includes.Aggregate(query, (current, include) => current.Include(include));
+
+                Result = Context.Set<TEntity>().Add(newEntity);
+                TrySaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Result;
+        }
+
         public bool Update<TEntity>(TEntity modifiedEntity) where TEntity : class
         {
             bool Result = false;
