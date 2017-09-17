@@ -6,10 +6,10 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 namespace Repository.EntityFramework
 {
-    public class Repository : IRepository, IDisposable
+    public class EFRepository : IRepository, IDisposable
     {
         protected DbContext Context;
-        public Repository(DbContext context, bool autoDetectChangesEnabled = false, bool proxyCreationEnabled = false)
+        public EFRepository(DbContext context, bool autoDetectChangesEnabled = false, bool proxyCreationEnabled = false)
         {
             Context = context;
             Context.Configuration.AutoDetectChangesEnabled = autoDetectChangesEnabled;

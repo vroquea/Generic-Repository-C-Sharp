@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace Repository.EntityFramework
 {
-    public class UnitOfWork : Repository, IRepository, IUnitOfWork, IDisposable
+    public class EFUnitOfWork : EFRepository, IRepository, IUnitOfWork, IDisposable
     {
-        public UnitOfWork(DbContext context, bool autoDetectChangesEnabled = false,
+        public EFUnitOfWork(DbContext context, bool autoDetectChangesEnabled = false,
                                           bool proxyCreationEnabled = false) : base(context,autoDetectChangesEnabled, proxyCreationEnabled)
         {
         }
